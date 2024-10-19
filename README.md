@@ -16,7 +16,7 @@ TODO: Descripcion
 
 ### TODOs
 
-- Aplicar pihole y [wireguard](https://github.com/wg-easy/wg-easy/wiki/Using-WireGuard-Easy-with-Kubernetes) con terraform
+- Aplicar [wireguard](https://github.com/wg-easy/wg-easy/wiki/Using-WireGuard-Easy-with-Kubernetes) con terraform
 - Backend provider Azure Blob
 - Flujo de crear dominios
   - Crear tunel cloudflare si es publico

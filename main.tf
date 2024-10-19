@@ -3,6 +3,7 @@ resource "github_repository" "homelab-repo" {
   description = "🧑‍💻 Mi infraestructura personal, empleando Kubernetes, Terraform y Cloudflare"
   name = "homelab"
   visibility = "private"
+  vulnerability_alerts = true
 }
 
 resource "ssh_resource" "grx01" {
@@ -173,7 +174,13 @@ resource "helm_release" "k8s-pihole-secret" {
       EOF
     ])
 }
+resource "kubernetes_manifest" "pihole-storage" {
+  manifest = yamldecode(file("./kubernetes/pihole/storage-pihole.yaml"))
+}
+resource "kubernetes_manifest" "pihole-storage-dnsmasq" {
+  manifest = yamldecode(file("./kubernetes/pihole/storage-dnsmasq.yaml"))
+}
 resource "kubernetes_manifest" "pihole" {
-  manifest = yamldecode(file("./kubernetes/pihole.yaml"))
+  manifest = yamldecode(file("./kubernetes/pihole/pihole.yaml"))
 }
 

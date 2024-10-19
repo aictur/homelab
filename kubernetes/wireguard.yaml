@@ -29,7 +29,7 @@ spec:
               value: vpn.aictur.dev
             - name: WG_PORT
               value: "30000"
-          image: ghcr.io/wg-easy/wg-easy
+          image: ghcr.io/wg-easy/wg-easy:14
           imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 51820
@@ -70,6 +70,13 @@ spec:
           volumeMounts:
             - mountPath: /etc/wireguard
               name: config
+          resources:
+            limits:
+              cpu: 800m
+              memory: 1G
+            requests:
+              cpu: 100m
+              memory: 500Mi
       restartPolicy: Always
       volumes:
         - name: config
