@@ -1,0 +1,224 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: home
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  namespace: home
+  name: home-assistant-config
+spec:
+  storageClassName: local-path
+  accessModes: [ReadWriteOnce]
+  resources: { requests: { storage: 1Gi } }
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  namespace: home
+  name: z2mqtt-data
+spec:
+  storageClassName: local-path
+  accessModes: [ReadWriteOnce]
+  resources: { requests: { storage: 1Gi } }
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: home-assistant
+  namespace: home
+  labels:
+    app: home-assistant
+spec:
+  strategy:
+    type: Recreate
+  replicas: 1
+  selector:
+    matchLabels:
+      app: home-assistant
+  template:
+    metadata:
+      labels:
+        app: home-assistant
+    spec:
+      volumes:
+        - name: config
+          persistentVolumeClaim:
+            claimName: home-assistant-config
+        # - name: udev
+        #   hostPath:
+        #     path: /run/udev
+      hostNetwork: true
+      containers:
+      - name: home-assistant
+        image: ghcr.io/home-assistant/home-assistant:2024.10.2
+        ports:
+        - containerPort: 8123
+        securityContext:
+          privileged: true
+        volumeMounts:
+          - mountPath: /config
+            name: config
+          # - name: udev
+          #   mountPath: /run/udev
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: home-assistant
+  namespace: home
+spec:
+  selector:
+    app: home-assistant
+  ports:
+    - protocol: TCP
+      port: 8123
+      targetPort: 8123
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  annotations:
+    # add an annotation indicating the issuer to use.
+    cert-manager.io/cluster-issuer: letsencrypt
+  name: home-assistant
+  namespace: home
+spec:
+  rules:
+  - host: grx.aictur.dev
+    http:
+      paths:
+      - pathType: Prefix
+        path: /
+        backend:
+          service:
+            name: home-assistant
+            port:
+              number: 8123
+  tls: # < placing a host in the TLS config will determine what ends up in the cert's subjectAltNames
+  - hosts:
+    - grx.aictur.dev
+    secretName: tls-cert # < cert-manager will store the created certificate in this secret.
+---
+kind: ConfigMap
+apiVersion: v1
+metadata:
+  name: mqtt-config
+  namespace: home
+data:
+  mosquitto.conf: |
+    listener 1883 0.0.0.0
+    allow_anonymous true
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mqtt
+  namespace: home
+  labels:
+    app: mqtt
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mqtt
+  template:
+    metadata:
+      labels:
+        app: mqtt
+    spec:
+      containers:
+      - name: mqtt
+        image: eclipse-mosquitto:2.0.19
+        volumeMounts:
+        - name: config
+          mountPath: /mosquitto/config/mosquitto.conf
+          subPath: mosquitto.conf
+        ports:
+        - containerPort: 1883
+          name: mqtt
+        - containerPort: 9001
+          name: ws
+      volumes:
+      - name: config
+        configMap:
+          name: mqtt-config
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: mqtt
+  namespace: home
+spec:
+  type: NodePort
+  selector:
+    app: mqtt
+  ports:
+    - protocol: TCP
+      port: 1883
+      targetPort: 1883
+      name: mqtt
+      nodePort: 31883
+      #    - protocol: TCP
+      #port: 9001
+      #targetPort: 9001
+      #name: ws
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: z2mqtt
+  namespace: home
+  labels:
+    app: z2mqtt
+spec:
+  strategy:
+    type: Recreate
+  replicas: 1
+  selector:
+    matchLabels:
+      app: z2mqtt
+  template:
+    metadata:
+      labels:
+        app: z2mqtt
+    spec:
+      volumes:
+        - name: config
+          persistentVolumeClaim:
+            claimName: z2mqtt-data
+        - name: sonoff
+          hostPath:
+            path: /dev/ttyUSB0
+        - name: udev
+          hostPath:
+            path: /run/udev
+      containers:
+      - name: z2mqtt
+        image: koenkk/zigbee2mqtt:1.40.2
+        ports:
+        - containerPort: 8080
+        securityContext:
+          privileged: true
+        volumeMounts:
+          - mountPath: /app/data
+            name: config
+          - name: sonoff
+            mountPath: /dev/ttyUSB0
+          - name: udev
+            mountPath: /run/udev
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: z2mqtt
+  namespace: home
+spec:
+  selector:
+    app: z2mqtt
+  ports:
+    - protocol: TCP
+      port: 8080
+      targetPort: 8080
+      name: z2mqtt
