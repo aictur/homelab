@@ -81,7 +81,7 @@ resource "helm_release" "k8s-cloudflare-secret" {
   repository = "https://bedag.github.io/helm-charts/"
   chart      = "raw"
   version    = "2.0.0"
-  values = [
+  values = sensitive([
       <<-EOF
       resources:
         - apiVersion: v1
@@ -93,7 +93,7 @@ resource "helm_release" "k8s-cloudflare-secret" {
           stringData:
             api-token: ${sensitive(var.cloudflare-token)}
       EOF
-    ]
+    ])
 }
 
 # Aplicamos el ClusterIssuer encargado de generar los certificados
@@ -184,3 +184,13 @@ resource "kubernetes_manifest" "pihole" {
   manifest = yamldecode(file("./kubernetes/pihole/pihole.yaml"))
 }
 
+# resource "kubernetes_annotations" "example" {
+#   api_version = "apps/v1"
+#   kind        = "Deployment"
+#   metadata {
+#     name = "nginx-deployment"
+#   }
+#   template_annotations = {
+#     "kubectl.kubernetes.io/restartedAt" = time_static.restarted_at.rfc3339
+#   }
+# }

@@ -13,11 +13,14 @@ TODO: Descripcion
 3. Crear y permitir al usuario de terraform usar sudo sin password.
 4. Importar SSH keys.
 5. Anadir `/usr/local/bin` a la opcion `secure_path` de `/etc/sudoers` (Fix para usar `k3s` con `sudo`).
+6. Obtener un token de cloudflare con permisos de edicion de tunel (Cloudflare Tunnel) y acceso a aplicaciones a nivel de cuenta (Access: Apps and Policies) y edicion de DNS a nivel de zona.
 
 ### TODOs
 
 - Aplicar [wireguard](https://github.com/wg-easy/wg-easy/wiki/Using-WireGuard-Easy-with-Kubernetes) con terraform
-- Backend provider Azure Blob
+- Cloudflare tunel
+- Argo CD
+- Backend provider OVH (S3) o Azure Blob
 - Flujo de crear dominios
   - Crear tunel cloudflare si es publico
   - Crear registro DNS en pihole
@@ -29,7 +32,6 @@ TODO: Descripcion
 - DB Operator
 - Nextcloud
 - Jellyfin
-- Argo CD
 - Vaultwarden
 - Dashboards de grafana declarativamente
   - Trivy Operator: 17813
@@ -55,5 +57,6 @@ TODO: Descripcion
   - Kubescape
   - [Snyk](https://github.com/marketplace/actions/snyk)?
   - [Wireguard tunel](https://github.com/marketplace/actions/wireguard-session)
+  - Ejecutar `./generate-domains-tf.sh`
   - [Setup terraform](https://github.com/marketplace/actions/hashicorp-setup-terraform)
   - [Cache terraform](https://github.com/marketplace/actions/terraform-cache)

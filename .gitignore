@@ -32,7 +32,10 @@ override.tf.json
 .terraformrc
 terraform.rc
 
-# Others
+# Fichero de dominios de terraform autogenerado con ./generate-domains-tffs.sh
+domains.tf
+
+# Otros
 *.log
 kubeconfig
 /kubernetes/secrets/*.yaml

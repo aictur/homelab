@@ -6,6 +6,10 @@ terraform {
       source = "integrations/github"
       version = "6.3.1"
     }
+    cloudflare = {
+      source = "cloudflare/cloudflare"
+      version = "5.0.0-alpha1"
+    }
     ssh = {
       source = "loafoe/ssh"
       version = "2.7.0"

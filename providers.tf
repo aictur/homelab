@@ -2,6 +2,10 @@ provider "github" {
   token = var.gh-token
 }
 
+provider "cloudflare" {
+  api_token = var.cloudflare-token
+}
+
 provider "ssh" {
   debug_log = "ssh.log"
 }

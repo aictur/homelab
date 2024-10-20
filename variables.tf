@@ -37,19 +37,32 @@ variable "k8s-default-storage-path" {
   description = "Ruta en la que se almacenaran los volumenes por defecto de k3s"
 }
 
-variable "domains" {
-  type = list(object({
-    tunnel = bool,
-    value = string,
-    service = string
-  }))
-  description = "lista de dominios a gestionar"
-}
-
 variable "cloudflare-token" {
   type = string
   sensitive = true
   description = "Token de cloudflare para la gestion de los dominios publicos"
+}
+
+variable "cloudflare-domain" {
+  type = string
+  description = "Dominio para DNSs y el tunel de cloudflare"
+}
+
+variable "cloudflare-zone-id" {
+  type = string
+  description = "Zona de cloudflare"
+  sensitive = true
+}
+
+variable "cloudflare-account-id" {
+  type = string
+  description = "Account ID de cloudflare"
+  sensitive = true
+}
+
+variable "cloudflare-tunnel-secret" {
+  type = string
+  description = "Secreto para el tunel de cloudflare"
 }
 
 variable "pihole-admin-password" {
