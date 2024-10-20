@@ -18,12 +18,11 @@ TODO: Descripcion
 ### TODOs
 
 - Aplicar [wireguard](https://github.com/wg-easy/wg-easy/wiki/Using-WireGuard-Easy-with-Kubernetes) con terraform
-- Cloudflare tunel
 - Argo CD
 - Backend provider OVH (S3) o Azure Blob
 - Flujo de crear dominios
-  - Crear tunel cloudflare si es publico
   - Crear registro DNS en pihole
+  - Reiniciar cloudflared cuando apliquemos cambios en los dominios
 - StorageClass para el ssd
 - Cambiar `reclaimPolicy: Delete` por `Retain` en `storageclass/local-path`
 - Backups

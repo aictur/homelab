@@ -58,15 +58,3 @@ resource "kubernetes_config_map" "cloudflared-config" {
 resource "kubernetes_manifest" "cloudflared" {
   manifest = yamldecode(file("./kubernetes/cloudflared.yaml"))
 }
-# Reiniciamos por si hay cambios en el configmap, que lo refresque
-resource "kubernetes_annotations" "restart-cloudflared-1" {
-  api_version = "apps/v1"
-  kind        = "Deployment"
-  metadata {
-    name = "cloudflared"
-    namespace = "cloudflared"
-  }
-  template_annotations = {
-    "kubectl.kubernetes.io/restartedAt" = time_static.restarted_at.rfc3339
-  }
-}

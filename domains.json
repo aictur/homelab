@@ -3,6 +3,10 @@
   "value": "grx.aictur.dev",
   "service": "http://home-assistant.home.svc.cluster.local:8123"
 },{
+  "tunnel": true,
+  "value": "grafana.aictur.dev",
+  "service": "http://kube-prometheus-stack-grafana.observability.svc.cluster.local"
+},{
   "tunnel": false,
   "value": "speed.aictur.dev",
   "service": "http://speedtest.misc.svc.cluster.local"
