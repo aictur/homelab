@@ -32,7 +32,7 @@ spec:
           image: ghcr.io/wg-easy/wg-easy:14
           imagePullPolicy: IfNotPresent
           ports:
-            - containerPort: 51820
+            - containerPort: 30000
               name: wg
               protocol: UDP
             - containerPort: 51821

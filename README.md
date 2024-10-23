@@ -6,10 +6,8 @@ TODO: Descripcion
 
 1. Instalar Alma Linux
 2. Configurar networking (IP Fija y no usar search ni DNSs).
-
     - Evitar usar `search` ya que causa problemas con cert-manager.
     - Evitar configurar DNSs ya que k3s coge el `resolv.conf` del host y nos saltamos CoreDNS, dejandonos sin DNS interno en k8s.
-
 3. Crear y permitir al usuario de terraform usar sudo sin password.
 4. Importar SSH keys.
 5. Anadir `/usr/local/bin` a la opcion `secure_path` de `/etc/sudoers` (Fix para usar `k3s` con `sudo`).
@@ -17,12 +15,14 @@ TODO: Descripcion
 
 ### TODOs
 
+- DDNS
 - Aplicar [wireguard](https://github.com/wg-easy/wg-easy/wiki/Using-WireGuard-Easy-with-Kubernetes) con terraform
 - Argo CD
-- Backend provider OVH (S3) o Azure Blob
 - Flujo de crear dominios
   - Crear registro DNS en pihole
   - Reiniciar cloudflared cuando apliquemos cambios en los dominios
+- Servidor de mail
+- Backend provider OVH (S3) o Azure Blob
 - StorageClass para el ssd
 - Cambiar `reclaimPolicy: Delete` por `Retain` en `storageclass/local-path`
 - Backups

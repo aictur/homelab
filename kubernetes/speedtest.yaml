@@ -24,12 +24,31 @@ spec:
     spec:
       containers:
       - name: speedtest
-        image: ghcr.io/librespeed/speedtest
+        image: ghcr.io/librespeed/speedtest@sha256:054d3973bcec28abb528178ecc5decf6e202eb3be1b0d574ccf375a376480d98
         env:
           - name: WEBPORT
             value: "8080"
         ports:
         - containerPort: 8080
+        securityContext:
+          allowPrivilegeEscalation: false
+          readOnlyRootFilesystem: false
+          runAsNonRoot: false
+          capabilities:
+            drop:
+              - ALL
+            add:
+              - CHOWN
+              - NET_BIND_SERVICE
+          # runAsUser: 10001
+          # runAsGroup: 10001
+        resources:
+          limits:
+            cpu: 800m
+            memory: 1G
+          requests:
+            cpu: 100m
+            memory: 500Mi
 ---
 apiVersion: v1
 kind: Service

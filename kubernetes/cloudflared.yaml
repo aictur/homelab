@@ -21,6 +21,13 @@ spec:
         - --config
         - /etc/cloudflared/config/config.yaml
         - run
+        securityContext:
+          readOnlyRootFilesystem: true
+          seccompProfile:
+            type: RuntimeDefault
+          capabilities:
+            drop:
+              - ALL
         livenessProbe:
           httpGet:
             path: /ready
@@ -35,6 +42,13 @@ spec:
         - name: creds
           mountPath: /etc/cloudflared/creds
           readOnly: true
+        resources:
+          requests:
+            memory: 128Mi
+            cpu: 100m
+          limits:
+            memory: 2Gi
+            cpu: 1
       volumes:
       - name: creds
         secret:

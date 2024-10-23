@@ -57,6 +57,18 @@ spec:
         - containerPort: 8123
         securityContext:
           privileged: true
+          seccompProfile:
+            type: RuntimeDefault
+          capabilities:
+            drop:
+              - ALL
+        resources:
+          requests:
+            memory: 128Mi
+            cpu: 100m
+          limits:
+            memory: 2Gi
+            cpu: 1
         volumeMounts:
           - mountPath: /config
             name: config
@@ -96,10 +108,10 @@ spec:
             name: home-assistant
             port:
               number: 8123
-  tls: # < placing a host in the TLS config will determine what ends up in the cert's subjectAltNames
+  tls:
   - hosts:
     - grx.aictur.dev
-    secretName: tls-cert # < cert-manager will store the created certificate in this secret.
+    secretName: tls-cert
 ---
 kind: ConfigMap
 apiVersion: v1
@@ -131,6 +143,17 @@ spec:
       containers:
       - name: mqtt
         image: eclipse-mosquitto:2.0.19
+        securityContext:
+          readOnlyRootFilesystem: true
+          seccompProfile:
+            type: RuntimeDefault
+          capabilities:
+            drop:
+              - ALL
+            add:
+              - CHOWN
+              - SETGID
+              - SETUID
         volumeMounts:
         - name: config
           mountPath: /mosquitto/config/mosquitto.conf
@@ -140,6 +163,13 @@ spec:
           name: mqtt
         - containerPort: 9001
           name: ws
+        resources:
+          requests:
+            memory: 128Mi
+            cpu: 100m
+          limits:
+            memory: 2Gi
+            cpu: 1
       volumes:
       - name: config
         configMap:
@@ -201,6 +231,12 @@ spec:
         - containerPort: 8080
         securityContext:
           privileged: true
+          readOnlyRootFilesystem: true
+          seccompProfile:
+            type: RuntimeDefault
+          capabilities:
+            drop:
+              - ALL
         volumeMounts:
           - mountPath: /app/data
             name: config
@@ -208,6 +244,13 @@ spec:
             mountPath: /dev/ttyUSB0
           - name: udev
             mountPath: /run/udev
+        resources:
+          requests:
+            memory: 128Mi
+            cpu: 100m
+          limits:
+            memory: 2Gi
+            cpu: 1
 ---
 apiVersion: v1
 kind: Service

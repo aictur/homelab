@@ -13,7 +13,7 @@ provider "ssh" {
 provider "helm" {
   debug = true
   kubernetes {
-    config_path = "kubeconfig"
+    config_path    = "kubeconfig"
     config_context = "default"
   }
 }
@@ -26,5 +26,5 @@ provider "kubernetes" {
 provider "kubectl" {
   config_path    = "./kubeconfig"
   config_context = "default"
-  host = var.node-address
+  host           = var.node-address
 }

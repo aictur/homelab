@@ -32,7 +32,7 @@ spec:
           claimName: pihole-dnsmasq-data
       containers:
         - name: pihole
-          image: pihole/pihole
+          image: pihole/pihole:2024.07.0
           imagePullPolicy: IfNotPresent
           envFrom:
           - secretRef:
@@ -48,6 +48,13 @@ spec:
               value: all
           securityContext:
             privileged: true
+            seccompProfile:
+              type: RuntimeDefault
+            capabilities:
+              drop:
+                - ALL
+              add:
+                - NET_BIND_SERVICE
           ports:
             - containerPort: 53
               protocol: TCP

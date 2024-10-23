@@ -1,15 +1,15 @@
 resource "github_repository" "homelab-repo" {
-  auto_init = false
-  description = "🧑‍💻 Mi infraestructura personal, empleando Kubernetes, Terraform y Cloudflare"
-  name = "homelab"
-  visibility = "private"
+  auto_init            = false
+  description          = "🧑‍💻 Mi infraestructura personal, empleando Kubernetes, Terraform y Cloudflare"
+  name                 = "homelab"
+  visibility           = "private"
   vulnerability_alerts = true
 }
 
 resource "ssh_resource" "grx01" {
-  host = var.node-address
-  user = var.node-username
-  private_key = "${file(var.private-ssh-key-path)}"
+  host        = var.node-address
+  user        = var.node-username
+  private_key = file(var.private-ssh-key-path)
   commands = flatten([
     # Install basic stuff
     "sudo dnf install --assumeyes curl git iproute bind-utils telnet epel-release",
@@ -29,7 +29,7 @@ resource "ssh_resource" "grx01" {
     # Copiamos el fichero de config para kubectl para despues descargarlo
     "mkdir -p /home/${var.node-username}/.kube && sudo cp /etc/rancher/k3s/k3s.yaml /home/${var.node-username}/.kube/config && chown ${var.node-username}:${var.node-username} /home/${var.node-username}/.kube/config",
     # Copiamos el archivo de configuracion del server de k3s
-    "cat <<EOF | sudo tee /etc/rancher/k3s/config.yaml\n${templatefile("./k3s-config.tftpl", {"k8s-default-storage-path" = var.k8s-default-storage-path})}\nEOF",
+    "cat <<EOF | sudo tee /etc/rancher/k3s/config.yaml\n${templatefile("./k3s-config.tftpl", { "k8s-default-storage-path" = var.k8s-default-storage-path })}\nEOF",
     # Reiniciamos k3s para aplicar los cambios
     "sudo systemctl restart k3s"
   ])
@@ -51,22 +51,22 @@ resource "ssh_resource" "grx01" {
 
 # Instalamos cert manager para la gestion de certificados, principalmente del SSL de los ingress
 resource "helm_release" "cert-manager" {
-  name = "cert-manager"
-  version = "v1.16.1"
-  repository = "https://charts.jetstack.io"
-  chart = "cert-manager"
-  create_namespace = true
-  namespace = "cert-manager"
+  name              = "cert-manager"
+  version           = "v1.16.1"
+  repository        = "https://charts.jetstack.io"
+  chart             = "cert-manager"
+  create_namespace  = true
+  namespace         = "cert-manager"
   dependency_update = true
-  force_update = true
-  verify = false
-  wait = true
-  wait_for_jobs = true
-  timeout = 600
-  depends_on = [ ssh_resource.grx01 ]
+  force_update      = true
+  verify            = false
+  wait              = true
+  wait_for_jobs     = true
+  timeout           = 600
+  depends_on        = [ssh_resource.grx01]
 
   set {
-    name = "crds.enabled"
+    name  = "crds.enabled"
     value = true
   }
 }
@@ -82,7 +82,7 @@ resource "helm_release" "k8s-cloudflare-secret" {
   chart      = "raw"
   version    = "2.0.0"
   values = sensitive([
-      <<-EOF
+    <<-EOF
       resources:
         - apiVersion: v1
           kind: Secret
@@ -93,7 +93,7 @@ resource "helm_release" "k8s-cloudflare-secret" {
           stringData:
             api-token: ${sensitive(var.cloudflare-token)}
       EOF
-    ])
+  ])
 }
 
 # Aplicamos el ClusterIssuer encargado de generar los certificados
@@ -104,48 +104,48 @@ resource "kubernetes_manifest" "cloudflare-issuer" {
 
 # Instalamos el stack de observabilidad de prometheus+grafana
 resource "helm_release" "kube-prometheus-stack" {
-  name = "kube-prometheus-stack"
-  version = "65.2.0"
-  repository = "https://prometheus-community.github.io/helm-charts"
-  chart = "kube-prometheus-stack"
-  create_namespace = true
-  namespace = "observability"
+  name              = "kube-prometheus-stack"
+  version           = "65.2.0"
+  repository        = "https://prometheus-community.github.io/helm-charts"
+  chart             = "kube-prometheus-stack"
+  create_namespace  = true
+  namespace         = "observability"
   dependency_update = true
-  force_update = true
-  verify = false
-  wait = true
-  wait_for_jobs = true
-  depends_on = [ ssh_resource.grx01 ]
+  force_update      = true
+  verify            = false
+  wait              = true
+  wait_for_jobs     = true
+  depends_on        = [ssh_resource.grx01]
 
   values = [
     "${file("kubernetes/prom.values.yaml")}"
   ]
 
   set {
-    name = "grafana.adminPassword"
+    name  = "grafana.adminPassword"
     value = sensitive(var.grafana-admin-password)
   }
 }
 
 # Instalamos trivy operator para monitorizar la seguridad del cluster
 resource "helm_release" "trivy-operator" {
-  name = "trivy-operator"
-  version = "0.24.1"
-  repository = "https://aquasecurity.github.io/helm-charts/"
-  chart = "trivy-operator"
-  create_namespace = true
-  namespace = "trivy-operator"
+  name              = "trivy-operator"
+  version           = "0.24.1"
+  repository        = "https://aquasecurity.github.io/helm-charts/"
+  chart             = "trivy-operator"
+  create_namespace  = true
+  namespace         = "trivy-operator"
   dependency_update = true
-  force_update = true
-  verify = false
-  wait = true
-  wait_for_jobs = true
-  timeout = 600
-  depends_on = [ ssh_resource.grx01 ]
+  force_update      = true
+  verify            = false
+  wait              = true
+  wait_for_jobs     = true
+  timeout           = 600
+  depends_on        = [ssh_resource.grx01]
 
   # Habilitamos la integracion con prometheus
   set {
-    name = "serviceMonitor.enabled"
+    name  = "serviceMonitor.enabled"
     value = true
   }
 }
@@ -157,7 +157,7 @@ resource "helm_release" "k8s-pihole-secret" {
   chart      = "raw"
   version    = "2.0.0"
   values = sensitive([
-      <<-EOF
+    <<-EOF
       resources:
         - apiVersion: v1
           kind: Namespace
@@ -172,7 +172,7 @@ resource "helm_release" "k8s-pihole-secret" {
           data:
             WEBPASSWORD: ${base64encode(var.pihole-admin-password)}
       EOF
-    ])
+  ])
 }
 resource "kubernetes_manifest" "pihole-storage" {
   manifest = yamldecode(file("./kubernetes/pihole/storage-pihole.yaml"))

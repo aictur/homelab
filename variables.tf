@@ -1,77 +1,77 @@
 variable "gh-token" {
-  type = string
+  type        = string
   description = "Token de github para la autogestion del repositorio de Github"
-  sensitive = true
+  sensitive   = true
 }
 variable "gh-repo-name" {
-  type = string
+  type        = string
   description = "Nombre del repo de github"
-  default = "homelab"
+  default     = "homelab"
 }
 
 variable "node-address" {
-  type = string
+  type        = string
   description = "Direccion IP del nodo"
 }
 variable "node-username" {
-  type = string
+  type        = string
   description = "Usuario SSH del nodo"
 }
 variable "private-ssh-key-path" {
-  type = string
+  type        = string
   description = "Ruta a la clave privada para conectar por ssh al nodo"
 }
 
 variable "disk-mounts" {
   type = list(object({
-    uuid = string
-    path = string
-    type = string
+    uuid    = string
+    path    = string
+    type    = string
     options = string
   }))
   description = "Lista de objetos representando los discos a montar (fstab)"
 }
 
 variable "k8s-default-storage-path" {
-  type = string
+  type        = string
   description = "Ruta en la que se almacenaran los volumenes por defecto de k3s"
 }
 
 variable "cloudflare-token" {
-  type = string
-  sensitive = true
+  type        = string
+  sensitive   = true
   description = "Token de cloudflare para la gestion de los dominios publicos"
 }
 
 variable "cloudflare-domain" {
-  type = string
+  type        = string
   description = "Dominio para DNSs y el tunel de cloudflare"
 }
 
 variable "cloudflare-zone-id" {
-  type = string
+  type        = string
   description = "Zona de cloudflare"
-  sensitive = true
+  sensitive   = true
 }
 
 variable "cloudflare-account-id" {
-  type = string
+  type        = string
   description = "Account ID de cloudflare"
-  sensitive = true
+  sensitive   = true
 }
 
 variable "cloudflare-tunnel-secret" {
-  type = string
+  type        = string
   description = "Secreto para el tunel de cloudflare"
 }
 
 variable "pihole-admin-password" {
-  type = string
-  sensitive = true
+  type        = string
+  sensitive   = true
   description = "Password para el usuario admin de PiHole"
 }
 variable "grafana-admin-password" {
-  type = string
-  sensitive = true
+  type        = string
+  sensitive   = true
   description = "Password para el usuario admin de grafana"
 }
