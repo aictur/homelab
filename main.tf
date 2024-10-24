@@ -117,11 +117,11 @@ resource "helm_release" "kube-prometheus-stack" {
   wait_for_jobs     = true
   depends_on        = [ssh_resource.grx01]
 
-  values = [
+  values = sensitive([
     "${file("kubernetes/prom.values.yaml")}"
-  ]
+  ])
 
-  set {
+  set_sensitive {
     name  = "grafana.adminPassword"
     value = sensitive(var.grafana-admin-password)
   }
@@ -181,8 +181,33 @@ resource "kubernetes_manifest" "pihole-storage-dnsmasq" {
   manifest = yamldecode(file("./kubernetes/pihole/storage-dnsmasq.yaml"))
 }
 resource "kubernetes_manifest" "pihole" {
-  manifest = yamldecode(file("./kubernetes/pihole/pihole.yaml"))
-  depends_on = [ kubernetes_config_map.pihole-dominios-internos ]
+  manifest   = yamldecode(file("./kubernetes/pihole/pihole.yaml"))
+  depends_on = [kubernetes_config_map.pihole-dominios-internos]
+}
+
+resource "helm_release" "argocd" {
+  name              = "argocd"
+  repository        = "https://argoproj.github.io/argo-helm"
+  chart             = "argo-cd"
+  version           = "7.6.12"
+  create_namespace  = true
+  namespace         = "argocd"
+  dependency_update = true
+  force_update      = true
+  verify            = false
+  wait              = true
+  wait_for_jobs     = true
+  timeout           = 600
+  depends_on        = [ssh_resource.grx01]
+
+  values = sensitive([
+    "${file("kubernetes/argo.values.yaml")}"
+  ])
+
+  set_sensitive {
+    name  = "configs.secret.argocdServerAdminPassword"
+    value = sensitive(bcrypt(var.argo-admin-password))
+  }
 }
 
 # resource "kubernetes_annotations" "example" {

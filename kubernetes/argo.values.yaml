@@ -1,0 +1,15 @@
+global:
+  domain: argo.aictur.dev
+
+configs:
+  params:
+    server:
+      insecure: false
+
+server:
+  ingress:
+    enabled: true
+    hostname: argo.aictur.dev
+    tls: true
+    annotations:
+      cert-manager.io/cluster-issuer: "letsencrypt"

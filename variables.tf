@@ -75,3 +75,9 @@ variable "grafana-admin-password" {
   sensitive   = true
   description = "Password para el usuario admin de grafana"
 }
+
+variable "argo-admin-password" {
+  type        = string
+  sensitive   = true
+  description = "Password para el usuario admin de ArgoCD"
+}
