@@ -182,6 +182,7 @@ resource "kubernetes_manifest" "pihole-storage-dnsmasq" {
 }
 resource "kubernetes_manifest" "pihole" {
   manifest = yamldecode(file("./kubernetes/pihole/pihole.yaml"))
+  depends_on = [ kubernetes_config_map.pihole-dominios-internos ]
 }
 
 # resource "kubernetes_annotations" "example" {

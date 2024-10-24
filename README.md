@@ -20,6 +20,7 @@ TODO: Descripcion
 - Argo CD
 - Flujo de crear dominios
   - Crear registro DNS en pihole
+  - Reiniciar pihole cuando apliquemos cambios en los dominios
   - Reiniciar cloudflared cuando apliquemos cambios en los dominios
 - Servidor de mail
 - Backend provider OVH (S3) o Azure Blob

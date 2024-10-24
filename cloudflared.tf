@@ -1,5 +1,6 @@
 locals {
   dominios = jsondecode(file("domains.json"))
+  template_hosts_file = "%{ for dominio in local.dominios }192.168.1.30 ${dominio.value}\n%{ endfor }"
 }
 resource "time_static" "restarted_at" {}
 
@@ -57,4 +58,15 @@ resource "kubernetes_config_map" "cloudflared-config" {
 # Desplegamos cloudflared
 resource "kubernetes_manifest" "cloudflared" {
   manifest = yamldecode(file("./kubernetes/cloudflared.yaml"))
+}
+
+# Configuramos los DNS internos
+resource "kubernetes_config_map" "pihole-dominios-internos" {
+  data = {
+    "custom.list" = templatestring(local.template_hosts_file, {dominios = local.dominios})
+  }
+  metadata {
+    name = "dominios-internos"
+    namespace = "pihole"
+  }
 }

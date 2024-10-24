@@ -27,6 +27,9 @@ spec:
       - name: etc
         persistentVolumeClaim:
           claimName: pihole-data
+      - name: dominios-internos
+        configMap:
+          name: dominios-internos
       - name: dnsmasq
         persistentVolumeClaim:
           claimName: pihole-dnsmasq-data
@@ -67,6 +70,9 @@ spec:
           volumeMounts:
             - name: etc
               mountPath: /etc/pihole
+            - name: dominios-internos
+              mountPath: /etc/pihole/custom.list
+              subPath: custom.list
             - name: dnsmasq
               mountPath: /etc/dnsmasq.d
           resources:

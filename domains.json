@@ -10,4 +10,8 @@
   "tunnel": false,
   "value": "speed.aictur.dev",
   "service": "http://speedtest.misc.svc.cluster.local"
+},{
+  "tunnel": false,
+  "value": "z2mqtt.aictur.dev",
+  "service": "http://z2mqtt.home.svc.cluster.local:8080"
 }]
