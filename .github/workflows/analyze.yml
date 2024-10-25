@@ -36,6 +36,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+      - name: Generar dominios de TF
+        run: ./generate-domains-tf.sh
       - uses: actions/cache@v4
         name: Cache plugin dir
         with:

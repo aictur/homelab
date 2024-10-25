@@ -17,7 +17,8 @@ jobs:
           wg-client-b64: ${{ secrets.WG_CONFIG }}
           timeout-address: "192.168.1.30"
           timeout-seconds: 180
-      - run: pwd && ls -lia
+      - name: Generar dominios de TF
+        run: ./generate-domains-tf.sh
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v2
         with:
