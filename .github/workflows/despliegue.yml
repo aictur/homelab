@@ -13,7 +13,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: Instalar Wireguard
-        run: sudo apt update -y && sudo apt install -y resolvconf wireguard
+        run: sudo apt update -y && sudo apt install --yes --force-yes --no-install-recommends resolvconf wireguard
       - name: Configurar Wireguard
         run: echo "${{ secrets.WG_CONFIG }}" | base64 -d 2> /dev/null > wg0.conf
       - name: Conectar Wireguard
