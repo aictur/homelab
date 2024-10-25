@@ -17,10 +17,15 @@ jobs:
       #     wg-client-b64: ${{ secrets.WG_CONFIG }}
       #     timeout-address: "192.168.1.30"
       #     timeout-seconds: 180
-      - name: Set up WireGuard Connection
-        uses: niklaskeerl/easy-wireguard-action@v2
+      - name: Set up WireGuard
+        uses: egor-tensin/setup-wireguard@v1
         with:
-          WG_CONFIG_FILE: ${{ secrets.WG_CONFIG }}
+          endpoint: vpn.aictur.dev:30000
+          endpoint_public_key: ${{ secrets.WG_PUBLIC_KEY }}
+          ips: 10.8.0.3/24
+          allowed_ips: 0.0.0.0/0,::/0
+          private_key: ${{ secrets.WG_PRIVATE_KEY }}
+          preshared_key: ${{ secrets.WG_SHARED_KEY }}
       - name: Generar dominios de TF
         run: ./generate-domains-tf.sh
       - name: Setup Terraform
