@@ -15,7 +15,7 @@ jobs:
       - uses: NexRX/WireGuard-Session@v1
         with:
           wg-client-b64: ${{ secrets.WG_CONFIG }}
-          timeout-address: "10.8.0.1"
+          timeout-address: "192.168.1.30"
           timeout-seconds: 180
       - run: pwd && ls -lia
       - name: Setup Terraform

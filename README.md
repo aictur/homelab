@@ -16,6 +16,7 @@ TODO: Descripcion
 
 ### TODOs
 
+- Variable de prod para IP timeout
 - Github [Rulesests](https://github.com/github/ruleset-recipes?tab=readme-ov-file)
 - DDNS
 - Aplicar [wireguard](https://github.com/wg-easy/wg-easy/wiki/Using-WireGuard-Easy-with-Kubernetes) con terraform

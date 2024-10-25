@@ -1,13 +1,13 @@
 locals {
-  dominios = jsondecode(file("domains.json"))
-  template_hosts_file = "%{ for dominio in local.dominios }192.168.1.30 ${dominio.value}\n%{ endfor }"
+  dominios            = jsondecode(file("domains.json"))
+  template_hosts_file = "%{for dominio in local.dominios}192.168.1.30 ${dominio.value}\n%{endfor}"
 }
 resource "time_static" "restarted_at" {}
 
 # Creamos el tunel de cloudflare
 resource "cloudflare_zero_trust_tunnel_cloudflared" "cloudflare-tunnel" {
-  account_id = var.cloudflare-account-id
-  name       = "grx01 kubernetes"
+  account_id    = var.cloudflare-account-id
+  name          = "grx01 kubernetes"
   tunnel_secret = sensitive(base64sha256(var.cloudflare-tunnel-secret))
 }
 
@@ -21,14 +21,14 @@ resource "kubernetes_namespace" "cloudflared-namespace" {
 # Secreto para la configuracion de cloudflared
 resource "kubernetes_secret" "cloudflared-secrets" {
   metadata {
-    name = "tunnel-credentials"
+    name      = "tunnel-credentials"
     namespace = "cloudflared"
   }
   data = {
-    "credentials.json" =jsonencode({
-      AccountTag = var.cloudflare-account-id,
+    "credentials.json" = jsonencode({
+      AccountTag   = var.cloudflare-account-id,
       TunnelSecret = base64sha256(var.cloudflare-tunnel-secret),
-      TunnelID = cloudflare_zero_trust_tunnel_cloudflared.cloudflare-tunnel.id
+      TunnelID     = cloudflare_zero_trust_tunnel_cloudflared.cloudflare-tunnel.id
     })
   }
 }
@@ -36,21 +36,21 @@ resource "kubernetes_secret" "cloudflared-secrets" {
 # Configuracion de cloudflared
 resource "kubernetes_config_map" "cloudflared-config" {
   metadata {
-    name = "cloudflared-config"
+    name      = "cloudflared-config"
     namespace = "cloudflared"
   }
   data = {
     "config.yaml" = yamlencode({
-      tunnel = "homelab-grx01-k8s"
+      tunnel           = "homelab-grx01-k8s"
       credentials-file = "/etc/cloudflared/creds/credentials.json"
-      metrics = "0.0.0.0:2000"
-      no-autoupdate = true
+      metrics          = "0.0.0.0:2000"
+      no-autoupdate    = true
       ingress = flatten([
         [for dominio in local.dominios : {
           hostname = dominio.value
-          service = dominio.service
+          service  = dominio.service
         } if dominio.tunnel],
-        {service = "http_status:404"}
+        { service = "http_status:404" }
       ])
     })
   }
@@ -63,10 +63,10 @@ resource "kubernetes_manifest" "cloudflared" {
 # Configuramos los DNS internos
 resource "kubernetes_config_map" "pihole-dominios-internos" {
   data = {
-    "custom.list" = templatestring(local.template_hosts_file, {dominios = local.dominios})
+    "custom.list" = templatestring(local.template_hosts_file, { dominios = local.dominios })
   }
   metadata {
-    name = "dominios-internos"
+    name      = "dominios-internos"
     namespace = "pihole"
   }
 }

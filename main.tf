@@ -3,9 +3,9 @@ data "github_user" "current" {
 }
 
 resource "github_repository" "homelab-repo" {
-  auto_init            = false
-  description          = "🧑‍💻 Mi infraestructura personal, empleando Kubernetes, Terraform y Cloudflare"
-  name                 = "homelab"
+  auto_init   = false
+  description = "🧑‍💻 Mi infraestructura personal, empleando Kubernetes, Terraform y Cloudflare"
+  name        = "homelab"
   # visibility           = "private"
   visibility           = "public"
   vulnerability_alerts = true
@@ -26,10 +26,10 @@ resource "github_repository_environment" "production" {
 
 # Creamos el secreto vacio, para su posterior configuracion
 resource "github_actions_environment_secret" "gh-wg-config-secret" {
-  repository       = github_repository.homelab-repo.name
-  environment = github_repository_environment.production.environment
-  secret_name      = "WG_CONFIG"
-  plaintext_value  = ""
+  repository      = github_repository.homelab-repo.name
+  environment     = github_repository_environment.production.environment
+  secret_name     = "WG_CONFIG"
+  plaintext_value = ""
 }
 
 # resource "azurerm_resource_group" "example" {
