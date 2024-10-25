@@ -8,7 +8,7 @@ jobs:
       - uses: actions/checkout@v4
       - uses: NexRX/WireGuard-Session@v1
         with:
-          wg-client-b64: secrets.WG_CONFIG
+          wg-client-b64: ${{ secrets.WG_CONFIG }}
           timeout-address: "10.8.0.1"
           timeout-seconds: 180
       - run: curl ifconfig.me
