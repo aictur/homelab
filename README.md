@@ -16,6 +16,10 @@ TODO: Descripcion
 
 ### TODOs
 
+- GH Secrets
+  - WG_CONFIG
+- GH environment production
+- Github [Rulesests](https://github.com/github/ruleset-recipes?tab=readme-ov-file)
 - Cronjob para actualizar IP publica en GitHub
 - Aplicar [wireguard](https://github.com/wg-easy/wg-easy/wiki/Using-WireGuard-Easy-with-Kubernetes) con terraform
 - Backend provider OVH (S3) o Azure Blob
@@ -52,9 +56,6 @@ TODO: Descripcion
   - Protocolo de creacion de aplicacion
   - Protocolo de creacion de dominio
 - Github Actions
-  - Gitleaks
-  - Trivy
-  - Kubescape
   - [Snyk](https://github.com/marketplace/actions/snyk)?
   - [Wireguard tunel](https://github.com/marketplace/actions/wireguard-session)
   - Ejecutar `./generate-domains-tf.sh`

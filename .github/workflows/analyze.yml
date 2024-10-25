@@ -1,14 +1,60 @@
 name: Analyze codebase
 run-name: Anzalizando codigo
-on: [push, pull_request]
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
 jobs:
   Analyze:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: gitleaks/gitleaks-action@v2
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Trivy Cache
+        uses: yogeshlonkar/trivy-cache-action@v0
+        with:
+          gh-token: ${{ secrets.GITHUB_TOKEN }}
+      - name: Run Trivy vulnerability scanner
+        uses: aquasecurity/trivy-action@0.28.0
+        with:
+          scan-type: 'fs'
+          scan-ref: '.'
+          format: 'table'
+          exit-code: '1'
+          ignore-unfixed: true
+          vuln-type: 'os,library'
+          severity: 'CRITICAL,HIGH'
+          trivyignores: '.trivyignore.yaml'
+          cache-dir: .trivy
+  Deploy:
+    runs-on: ubuntu-latest
+    environment: production
+    steps:
       - uses: NexRX/WireGuard-Session@v1
         with:
           wg-client-b64: ${{ secrets.WG_CONFIG }}
           timeout-address: "10.8.0.1"
           timeout-seconds: 180
-      - run: curl ifconfig.me
+      - run: ./generate-domains-tf.sh
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v2
+        with:
+          terraform_version: 1.9.8
+      - uses: terraform-cache/terraform-cache@v1
+      - name: Terraform Init
+        id: init
+        run: terraform init
+      - name: Terraform Validate
+        id: validate
+        run: terraform validate -no-color
+      - name: Terraform Plan
+        id: plan
+        run: terraform plan -no-color
+        continue-on-error: true
