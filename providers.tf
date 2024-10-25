@@ -22,9 +22,3 @@ provider "kubernetes" {
   config_path    = "./kubeconfig"
   config_context = "default"
 }
-
-provider "kubectl" {
-  config_path    = "./kubeconfig"
-  config_context = "default"
-  host           = var.node-address
-}

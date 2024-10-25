@@ -57,5 +57,3 @@ TODO: Descripcion
   - [Snyk](https://github.com/marketplace/actions/snyk)?
   - [Wireguard tunel](https://github.com/marketplace/actions/wireguard-session)
   - Ejecutar `./generate-domains-tf.sh`
-  - [Setup terraform](https://github.com/marketplace/actions/hashicorp-setup-terraform)
-  - [Cache terraform](https://github.com/marketplace/actions/terraform-cache)

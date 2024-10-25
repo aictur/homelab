@@ -5,7 +5,7 @@ data "github_user" "current" {
 resource "github_repository" "homelab-repo" {
   auto_init   = false
   description = "🧑‍💻 Mi infraestructura personal, empleando Kubernetes, Terraform y Cloudflare"
-  name        = "homelab"
+  name        = var.gh-repo-name
   # visibility           = "private"
   visibility           = "public"
   vulnerability_alerts = true
@@ -171,7 +171,7 @@ resource "helm_release" "kube-prometheus-stack" {
   depends_on        = [ssh_resource.grx01]
 
   values = sensitive([
-    "${file("kubernetes/prom.values.yaml")}"
+    file("kubernetes/prom.values.yaml")
   ])
 
   set_sensitive {
@@ -254,7 +254,7 @@ resource "helm_release" "argocd" {
   depends_on        = [ssh_resource.grx01]
 
   values = sensitive([
-    "${file("kubernetes/argo.values.yaml")}"
+    file("kubernetes/argo.values.yaml")
   ])
 
   set_sensitive {

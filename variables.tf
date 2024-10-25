@@ -43,11 +43,6 @@ variable "cloudflare-token" {
   description = "Token de cloudflare para la gestion de los dominios publicos"
 }
 
-variable "cloudflare-domain" {
-  type        = string
-  description = "Dominio para DNSs y el tunel de cloudflare"
-}
-
 variable "cloudflare-zone-id" {
   type        = string
   description = "Zona de cloudflare"
