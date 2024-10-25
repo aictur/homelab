@@ -8,7 +8,7 @@ configs:
 
 server:
   ingress:
-    enabled: true
+    enabled: false
     hostname: argo.aictur.dev
     tls: true
     annotations:

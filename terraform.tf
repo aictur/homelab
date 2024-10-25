@@ -22,9 +22,9 @@ terraform {
       source  = "hashicorp/kubernetes"
       version = "2.33.0"
     }
-    kubectl = {
-      source  = "gavinbunney/kubectl"
-      version = "1.14.0"
+    azurerm = {
+      source = "hashicorp/azurerm"
+      version = "4.6.0"
     }
   }
 }
