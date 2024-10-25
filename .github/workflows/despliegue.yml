@@ -12,11 +12,15 @@ jobs:
     environment: production
     steps:
       - uses: actions/checkout@v4
-      - uses: NexRX/WireGuard-Session@v1
+      # - uses: NexRX/WireGuard-Session@v1
+      #   with:
+      #     wg-client-b64: ${{ secrets.WG_CONFIG }}
+      #     timeout-address: "192.168.1.30"
+      #     timeout-seconds: 180
+      - name: Set up WireGuard Connection
+        uses: niklaskeerl/easy-wireguard-action@v2
         with:
-          wg-client-b64: ${{ secrets.WG_CONFIG }}
-          timeout-address: "192.168.1.30"
-          timeout-seconds: 180
+          WG_CONFIG_FILE: ${{ secrets.WG_CONFIG }}
       - name: Generar dominios de TF
         run: ./generate-domains-tf.sh
       - name: Setup Terraform
