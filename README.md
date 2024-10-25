@@ -19,6 +19,8 @@ TODO: Descripcion
 - GH Secrets
   - WG_CONFIG
 - GH environment production
+  - Required reviewers
+  - Deployment branches and tags
 - Github [Rulesests](https://github.com/github/ruleset-recipes?tab=readme-ov-file)
 - Cronjob para actualizar IP publica en GitHub
 - Aplicar [wireguard](https://github.com/wg-easy/wg-easy/wiki/Using-WireGuard-Easy-with-Kubernetes) con terraform
