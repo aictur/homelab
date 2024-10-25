@@ -16,8 +16,8 @@ jobs:
         run: sudo apt update -y && sudo apt install -y wireguard
       - name: Configurar Wireguard
         run: echo "${{ secrets.WG_CONFIG }}" | base64 -d 2> /dev/null > wg0.conf
-      - name: Arrancar Wireguard
-        run: sudo wg-quick up wg0.conf
+      - name: Conectar Wireguard
+        run: sudo wg-quick up $PWD/wg0.conf
       - name: Test WG0
         run: curl 192.168.1.30:8123
       # - uses: NexRX/WireGuard-Session@v1
