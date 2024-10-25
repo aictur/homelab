@@ -1,10 +1,63 @@
+data "github_user" "current" {
+  username = ""
+}
+
 resource "github_repository" "homelab-repo" {
   auto_init            = false
   description          = "🧑‍💻 Mi infraestructura personal, empleando Kubernetes, Terraform y Cloudflare"
   name                 = "homelab"
-  visibility           = "private"
+  # visibility           = "private"
+  visibility           = "public"
   vulnerability_alerts = true
 }
+
+resource "github_repository_environment" "production" {
+  environment         = "production"
+  repository          = github_repository.homelab-repo.name
+  prevent_self_review = true
+  reviewers {
+    users = [data.github_user.current.id]
+  }
+  deployment_branch_policy {
+    protected_branches     = true
+    custom_branch_policies = false
+  }
+}
+
+# Creamos el secreto vacio, para su posterior configuracion
+resource "github_actions_environment_secret" "gh-wg-config-secret" {
+  repository       = github_repository.homelab-repo.name
+  environment = github_repository_environment.production.environment
+  secret_name      = "WG_CONFIG"
+  plaintext_value  = ""
+}
+
+# resource "azurerm_resource_group" "example" {
+#   name     = "example-resources"
+#   location = "West Europe"
+# }
+
+# resource "azurerm_storage_account" "example" {
+#   name                     = "examplestoracc"
+#   resource_group_name      = azurerm_resource_group.example.name
+#   location                 = azurerm_resource_group.example.location
+#   account_tier             = "Standard"
+#   account_replication_type = "LRS"
+# }
+
+# resource "azurerm_storage_container" "example" {
+#   name                  = "content"
+#   storage_account_name  = azurerm_storage_account.example.name
+#   container_access_type = "private"
+# }
+
+# resource "azurerm_storage_blob" "example" {
+#   name                   = "my-awesome-content.zip"
+#   storage_account_name   = azurerm_storage_account.example.name
+#   storage_container_name = azurerm_storage_container.example.name
+#   type                   = "Block"
+#   source                 = "some-local-file.zip"
+# }
 
 resource "ssh_resource" "grx01" {
   host        = var.node-address

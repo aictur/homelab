@@ -16,13 +16,8 @@ TODO: Descripcion
 
 ### TODOs
 
-- GH Secrets
-  - WG_CONFIG
-- GH environment production
-  - Required reviewers
-  - Deployment branches and tags
 - Github [Rulesests](https://github.com/github/ruleset-recipes?tab=readme-ov-file)
-- Cronjob para actualizar IP publica en GitHub
+- DDNS
 - Aplicar [wireguard](https://github.com/wg-easy/wg-easy/wiki/Using-WireGuard-Easy-with-Kubernetes) con terraform
 - Backend provider OVH (S3) o Azure Blob
 - Flujo de crear dominios

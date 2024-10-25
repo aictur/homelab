@@ -5,12 +5,13 @@ on:
     branches:
       - main
 jobs:
-  Analyze:
+  Preparacion:
     uses: ./.github/workflows/analyze.yml
   Deploy:
     runs-on: ubuntu-latest
     environment: production
     steps:
+      - uses: actions/checkout@v4
       - uses: NexRX/WireGuard-Session@v1
         with:
           wg-client-b64: ${{ secrets.WG_CONFIG }}
