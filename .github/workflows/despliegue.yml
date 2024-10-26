@@ -1,9 +1,9 @@
 name: Despliegue
 run-name: Desplegando PROD
-on: workflow_dispatch
-  # push:
-  #   branches:
-  #     - main
+on:
+  push:
+    branches:
+      - main
 jobs:
   Preparacion:
     uses: ./.github/workflows/analyze.yml
