@@ -12,7 +12,7 @@ TODO: Descripcion
 4. Importar SSH keys.
 5. Anadir `/usr/local/bin` a la opcion `secure_path` de `/etc/sudoers` (Fix para usar `k3s` con `sudo`).
 6. Obtener un token de cloudflare con permisos de edicion de tunel (Cloudflare Tunnel) y acceso a aplicaciones a nivel de cuenta (Access: Apps and Policies) y edicion de DNS a nivel de zona.
-7. [Configurar Azure CLI](https://registry.terraform.io/providers/hashicorp/azurerm/4.6.0/docs/guides/azure_cli)
+7. Obtener un OAuth client y secret para Tailscale, asi como la
 
 ### TODOs
 

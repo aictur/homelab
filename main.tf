@@ -84,6 +84,19 @@ resource "ssh_resource" "grx01" {
   depends_on = [ tailscale_tailnet_key.tailscale-grx01-key ]
 }
 
+data "tailscale_device" "ts-grx01" {
+  hostname     = "grx01"
+  wait_for = "60s"
+}
+
+resource "hub_actions_environment_secret" "gh-ts-host-ip" {
+  repository      = github_repository.homelab-repo.name
+  environment     = github_repository_environment.production.environment
+  secret_name     = "TS_HOST_IP"
+  plaintext_value = data.tailscale_device.ts-grx01.addresses[0]
+}
+
+
 # -------------------------------------------------------------------------------------------
 # Releases de HELM y otros manifiestos de k8s
 # -------------------------------------------------------------------------------------------
