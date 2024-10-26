@@ -14,7 +14,7 @@ resource "github_repository" "homelab-repo" {
 resource "github_repository_environment" "production" {
   environment         = "production"
   repository          = github_repository.homelab-repo.name
-  prevent_self_review = true
+  prevent_self_review = false
   reviewers {
     users = [data.github_user.current.id]
   }

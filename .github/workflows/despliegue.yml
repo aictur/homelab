@@ -18,8 +18,9 @@ jobs:
           oauth-client-id: ${{ secrets.TS_OAUTH_CLIENT_ID }}
           oauth-secret: ${{ secrets.TS_OAUTH_SECRET }}
           tags: tag:ci
+          version: 1.76.1
       - name: Test Tailscale
-        run: curl http://grx01:8123
+        run: curl http://grx01.taild52040.ts.net:8123
       - name: Generar dominios de TF
         run: ./generate-domains-tf.sh
       - name: Setup Terraform
