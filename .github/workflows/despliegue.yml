@@ -1,9 +1,9 @@
 name: Despliegue
 run-name: Desplegando PROD
-on:
-  push:
-    branches:
-      - main
+on: workflow_dispatch
+  # push:
+  #   branches:
+  #     - main
 jobs:
   Preparacion:
     uses: ./.github/workflows/analyze.yml
@@ -12,19 +12,14 @@ jobs:
     environment: production
     steps:
       - uses: actions/checkout@v4
-      - name: Instalar Wireguard
-        run: sudo apt update -y && sudo apt install --yes --no-install-recommends resolvconf wireguard
-      - name: Configurar Wireguard
-        run: echo "${{ secrets.WG_CONFIG }}" | base64 -d 2> /dev/null > wg0.conf
-      - name: Conectar Wireguard
-        run: sudo wg-quick up $PWD/wg0.conf
-      - name: Test WG0
-        run: curl 192.168.1.30:8123
-      # - uses: NexRX/WireGuard-Session@v1
-      #   with:
-      #     wg-client-b64: ${{ secrets.WG_CONFIG }}
-      #     timeout-address: "10.8.0.1"
-      #     timeout-seconds: 180
+      - name: Tailscale
+        uses: tailscale/github-action@v2
+        with:
+          oauth-client-id: ${{ secrets.TS_OAUTH_CLIENT_ID }}
+          oauth-secret: ${{ secrets.TS_OAUTH_SECRET }}
+          tags: tag:ci
+      - name: Test Tailscale
+        run: curl http://grx01:8123
       - name: Generar dominios de TF
         run: ./generate-domains-tf.sh
       - name: Setup Terraform

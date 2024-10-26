@@ -24,40 +24,26 @@ resource "github_repository_environment" "production" {
   }
 }
 
-# Creamos el secreto vacio, para su posterior configuracion
-resource "github_actions_environment_secret" "gh-wg-config-secret" {
+resource "github_actions_environment_secret" "gh-ts-oauth-client-id" {
   repository      = github_repository.homelab-repo.name
   environment     = github_repository_environment.production.environment
-  secret_name     = "WG_CONFIG"
-  plaintext_value = ""
+  secret_name     = "TS_OAUTH_CLIENT_ID"
+  plaintext_value = var.tailscale-client-id
+}
+resource "github_actions_environment_secret" "gh-ts-oauth-secret" {
+  repository      = github_repository.homelab-repo.name
+  environment     = github_repository_environment.production.environment
+  secret_name     = "TS_OAUTH_SECRET"
+  plaintext_value = var.tailscale-client-secret
 }
 
-# resource "azurerm_resource_group" "example" {
-#   name     = "example-resources"
-#   location = "West Europe"
-# }
-
-# resource "azurerm_storage_account" "example" {
-#   name                     = "examplestoracc"
-#   resource_group_name      = azurerm_resource_group.example.name
-#   location                 = azurerm_resource_group.example.location
-#   account_tier             = "Standard"
-#   account_replication_type = "LRS"
-# }
-
-# resource "azurerm_storage_container" "example" {
-#   name                  = "content"
-#   storage_account_name  = azurerm_storage_account.example.name
-#   container_access_type = "private"
-# }
-
-# resource "azurerm_storage_blob" "example" {
-#   name                   = "my-awesome-content.zip"
-#   storage_account_name   = azurerm_storage_account.example.name
-#   storage_container_name = azurerm_storage_container.example.name
-#   type                   = "Block"
-#   source                 = "some-local-file.zip"
-# }
+resource "tailscale_tailnet_key" "tailscale-grx01-key" {
+  reusable      = true
+  ephemeral     = false
+  preauthorized = true
+  expiry        = 3600
+  description   = "Tailscale grx01"
+}
 
 resource "ssh_resource" "grx01" {
   host        = var.node-address
@@ -84,13 +70,18 @@ resource "ssh_resource" "grx01" {
     # Copiamos el archivo de configuracion del server de k3s
     "cat <<EOF | sudo tee /etc/rancher/k3s/config.yaml\n${templatefile("./k3s-config.tftpl", { "k8s-default-storage-path" = var.k8s-default-storage-path })}\nEOF",
     # Reiniciamos k3s para aplicar los cambios
-    "sudo systemctl restart k3s"
+    "sudo systemctl restart k3s",
+    # Instalamos tailscale
+    "curl -fsSL https://tailscale.com/install.sh | sh",
+    "sudo tailscale up --ssh --auth-key=${tailscale_tailnet_key.tailscale-grx01-key.key}"
   ])
 
   # Descargamos el fichero de configuracion de kubectl y cambiamos la IP del loopback a la real
   provisioner "local-exec" {
     command = "scp -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -i ${var.private-ssh-key-path} ${self.user}@${self.host}:~/.kube/config ./kubeconfig && sed -Ei 's/127.0.0.1/${var.node-address}/' ./kubeconfig"
   }
+
+  depends_on = [ tailscale_tailnet_key.tailscale-grx01-key ]
 }
 
 # -------------------------------------------------------------------------------------------
@@ -262,14 +253,3 @@ resource "helm_release" "argocd" {
     value = sensitive(bcrypt(var.argo-admin-password))
   }
 }
-
-# resource "kubernetes_annotations" "example" {
-#   api_version = "apps/v1"
-#   kind        = "Deployment"
-#   metadata {
-#     name = "nginx-deployment"
-#   }
-#   template_annotations = {
-#     "kubectl.kubernetes.io/restartedAt" = time_static.restarted_at.rfc3339
-#   }
-# }

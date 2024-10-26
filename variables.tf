@@ -58,6 +58,22 @@ variable "cloudflare-account-id" {
 variable "cloudflare-tunnel-secret" {
   type        = string
   description = "Secreto para el tunel de cloudflare"
+  sensitive = true
+}
+variable "tailscale-client-secret" {
+  type        = string
+  description = "Secreto para tailscale"
+  sensitive = true
+}
+variable "tailscale-client-id" {
+  type        = string
+  description = "ID para tailscale"
+  sensitive = true
+}
+variable "tailscale-tailnet" {
+  type        = string
+  description = "Tailnet de tailscale"
+  sensitive = true
 }
 
 variable "pihole-admin-password" {

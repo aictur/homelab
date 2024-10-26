@@ -16,10 +16,10 @@ TODO: Descripcion
 
 ### TODOs
 
-- Variable de prod para IP timeout
+- Tailscale
 - Github [Rulesests](https://github.com/github/ruleset-recipes?tab=readme-ov-file)
 - DDNS
-- Aplicar [wireguard](https://github.com/wg-easy/wg-easy/wiki/Using-WireGuard-Easy-with-Kubernetes) con terraform
+- Aplicar [wireguard](https://github.com/wg-easy/wg-easy/wiki/Using-WireGuard-Easy-with-Kubernetes) con argo
 - Backend provider OVH (S3) o Azure Blob
 - Flujo de crear dominios
   - Crear registro DNS en pihole
@@ -30,7 +30,7 @@ TODO: Descripcion
 - Cambiar `reclaimPolicy: Delete` por `Retain` en `storageclass/local-path`
 - Backups
   - k3s
-  - Volumenes
+  - Volumenes: [gemini](https://github.com/FairwindsOps/gemini), [velero](https://github.com/vmware-tanzu/velero), [snapscheduler](https://github.com/backube/snapscheduler)
 - DB Operator
 - Nextcloud
 - Jellyfin
@@ -55,5 +55,5 @@ TODO: Descripcion
   - Protocolo de creacion de dominio
 - Github Actions
   - [Snyk](https://github.com/marketplace/actions/snyk)?
-  - [Wireguard tunel](https://github.com/marketplace/actions/wireguard-session)
+  - Cloudflare Warp
   - Ejecutar `./generate-domains-tf.sh`
