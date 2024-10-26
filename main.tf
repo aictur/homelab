@@ -89,7 +89,7 @@ data "tailscale_device" "ts-grx01" {
   wait_for = "60s"
 }
 
-resource "hub_actions_environment_secret" "gh-ts-host-ip" {
+resource "github_actions_environment_secret" "gh-ts-host-ip" {
   repository      = github_repository.homelab-repo.name
   environment     = github_repository_environment.production.environment
   secret_name     = "TS_HOST_IP"
