@@ -16,10 +16,11 @@ TODO: Descripcion
 
 ### TODOs
 
+- Webhook GitHub -> ArgoCD
+- Autoaplicar las aplicaciones de ArgoCD desde el propio ArgoCD (terraform)
 - Servidor de [notificaciones](https://ntfy.sh/)
 - Github [Rulesests](https://github.com/github/ruleset-recipes?tab=readme-ov-file)
 - DDNS
-- Aplicar [wireguard](https://github.com/wg-easy/wg-easy/wiki/Using-WireGuard-Easy-with-Kubernetes) con argo
 - Backend provider OVH (S3) o Azure Blob
 - Flujo de crear dominios
   - Crear registro DNS en pihole
