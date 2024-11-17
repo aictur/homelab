@@ -4,12 +4,13 @@ global:
 configs:
   params:
     server:
-      insecure: false
+      insecure: true # Necesario segun la doc oficial de ArgoCD (https://argo-cd.readthedocs.io/en/stable/operator-manual/ingress/#traefik-v30)
 
 server:
+  insecure: true
   ingress:
     enabled: false
     hostname: argo.aictur.dev
-    tls: true
+    tls: false
     annotations:
       cert-manager.io/cluster-issuer: "letsencrypt"

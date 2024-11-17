@@ -3,10 +3,9 @@ data "github_user" "current" {
 }
 
 resource "github_repository" "homelab-repo" {
-  auto_init   = false
-  description = "🧑‍💻 Mi infraestructura personal, empleando Kubernetes, Terraform y Cloudflare"
-  name        = var.gh-repo-name
-  # visibility           = "private"
+  auto_init            = false
+  description          = "🧑‍💻 Mi infraestructura personal, empleando Kubernetes, Terraform y Cloudflare"
+  name                 = var.gh-repo-name
   visibility           = "public"
   vulnerability_alerts = true
 }
@@ -43,12 +42,16 @@ resource "tailscale_tailnet_key" "tailscale-grx01-key" {
   preauthorized = true
   expiry        = 3600
   description   = "Tailscale grx01"
+  tags          = ["tag:ci"]
 }
 
 resource "ssh_resource" "grx01" {
   host        = var.node-address
   user        = var.node-username
   private_key = file(var.private-ssh-key-path)
+  triggers = {
+    always_run = timestamp()
+  }
   commands = flatten([
     # Install basic stuff
     "sudo dnf install --assumeyes curl git iproute bind-utils telnet epel-release",
@@ -73,7 +76,7 @@ resource "ssh_resource" "grx01" {
     "sudo systemctl restart k3s",
     # Instalamos tailscale
     "curl -fsSL https://tailscale.com/install.sh | sh",
-    "sudo tailscale up --ssh --auth-key=${tailscale_tailnet_key.tailscale-grx01-key.key}"
+    "sudo tailscale up --ssh --advertise-tags=tag:ci --auth-key=${tailscale_tailnet_key.tailscale-grx01-key.key}"
   ])
 
   # Descargamos el fichero de configuracion de kubectl y cambiamos la IP del loopback a la real
@@ -81,20 +84,15 @@ resource "ssh_resource" "grx01" {
     command = "scp -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -i ${var.private-ssh-key-path} ${self.user}@${self.host}:~/.kube/config ./kubeconfig && sed -Ei 's/127.0.0.1/${var.node-address}/' ./kubeconfig"
   }
 
-  depends_on = [ tailscale_tailnet_key.tailscale-grx01-key ]
+  depends_on = [tailscale_tailnet_key.tailscale-grx01-key]
 }
 
-data "tailscale_device" "ts-grx01" {
-  hostname     = "grx01"
-  wait_for = "60s"
-}
-
-resource "github_actions_environment_secret" "gh-ts-host-ip" {
-  repository      = github_repository.homelab-repo.name
-  environment     = github_repository_environment.production.environment
-  secret_name     = "TS_HOST_IP"
-  plaintext_value = data.tailscale_device.ts-grx01.addresses[0]
-}
+# resource "github_actions_environment_secret" "gh-ts-host-ip" {
+#   repository      = github_repository.homelab-repo.name
+#   environment     = github_repository_environment.production.environment
+#   secret_name     = "TS_HOST_IP"
+#   plaintext_value = "grx01.taild52040.ts.net"
+# }
 
 
 # -------------------------------------------------------------------------------------------

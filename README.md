@@ -16,7 +16,7 @@ TODO: Descripcion
 
 ### TODOs
 
-- Tailscale
+- Servidor de [notificaciones](https://ntfy.sh/)
 - Github [Rulesests](https://github.com/github/ruleset-recipes?tab=readme-ov-file)
 - DDNS
 - Aplicar [wireguard](https://github.com/wg-easy/wg-easy/wiki/Using-WireGuard-Easy-with-Kubernetes) con argo
@@ -25,7 +25,7 @@ TODO: Descripcion
   - Crear registro DNS en pihole
   - Reiniciar pihole cuando apliquemos cambios en los dominios
   - Reiniciar cloudflared cuando apliquemos cambios en los dominios
-- Servidor de mail
+- Servidor de mail para envio de notificaciones
 - StorageClass para el ssd
 - Cambiar `reclaimPolicy: Delete` por `Retain` en `storageclass/local-path`
 - Backups
