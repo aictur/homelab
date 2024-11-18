@@ -3,53 +3,53 @@ misconfigurations:
     statement: No es una vulnerabilidad
   - id: AVD-KSV-0120 # No Sysmodule Capability
     paths:
-      - "kubernetes/wireguard.yaml"
+      - "kubernetes/apps/manifests/wireguard.yaml"
     statement: Needed
   - id: AVD-KSV-0104 # No Seccomp Unconfined
     paths:
-      - "kubernetes/wireguard.yaml"
+      - "kubernetes/apps/manifests/wireguard.yaml"
       - "kubernetes/apps/manifests/speedtest.yaml"
     statement: Needed
   - id: AVD-KSV-0030 # Use Default Seccomp
     paths:
-      - "kubernetes/wireguard.yaml"
+      - "kubernetes/apps/manifests/wireguard.yaml"
       - "kubernetes/apps/manifests/speedtest.yaml"
     statement: Needed
   - id: AVD-KSV-0106 # Drop Caps Add Bind Svc
     paths:
-      - "kubernetes/wireguard.yaml"
+      - "kubernetes/apps/manifests/wireguard.yaml"
       - "kubernetes/apps/manifests/speedtest.yaml"
       - "kubernetes/apps/manifests/home-assistant.yaml"
     statement: Needed
   - id: AVD-KSV-0022 # No Non Default Capabilities
     paths:
-      - "kubernetes/wireguard.yaml"
+      - "kubernetes/apps/manifests/wireguard.yaml"
       - "kubernetes/apps/manifests/speedtest.yaml"
       - "kubernetes/pihole/pihole.yaml"
       - "kubernetes/apps/manifests/home-assistant.yaml"
     statement: Needed
   - id: AVD-KSV-0003 # Drop Default Capabilities
     paths:
-      - "kubernetes/wireguard.yaml"
+      - "kubernetes/apps/manifests/wireguard.yaml"
     statement: Needed
   - id: AVD-KSV-0021 # Use High Gid
     paths:
-      - "kubernetes/wireguard.yaml"
+      - "kubernetes/apps/manifests/wireguard.yaml"
     statement: Needed
   - id: AVD-KSV-0020 # Use High Uid
     paths:
-      - "kubernetes/wireguard.yaml"
+      - "kubernetes/apps/manifests/wireguard.yaml"
     statement: Needed
   - id: AVD-KSV-0014 # Use Readonly Filesystem
     paths:
-      - "kubernetes/wireguard.yaml"
+      - "kubernetes/apps/manifests/wireguard.yaml"
       - "kubernetes/apps/manifests/speedtest.yaml"
       - "kubernetes/pihole/pihole.yaml"
       - "kubernetes/apps/manifests/home-assistant.yaml"
     statement: Needed
   - id: AVD-KSV-0012 # No Root
     paths:
-      - "kubernetes/wireguard.yaml"
+      - "kubernetes/apps/manifests/wireguard.yaml"
       - "kubernetes/apps/manifests/speedtest.yaml"
       - "kubernetes/pihole/pihole.yaml"
       - "kubernetes/apps/manifests/home-assistant.yaml"
@@ -57,7 +57,7 @@ misconfigurations:
     statement: Needed
   - id: AVD-KSV-0001 # No Self Privesc
     paths:
-      - "kubernetes/wireguard.yaml"
+      - "kubernetes/apps/manifests/wireguard.yaml"
       - "kubernetes/pihole/pihole.yaml"
       - "kubernetes/apps/manifests/home-assistant.yaml"
       - "kubernetes/cloudflared.yaml"
