@@ -3,8 +3,7 @@ global:
 
 configs:
   params:
-    server:
-      insecure: true # Necesario segun la doc oficial de ArgoCD (https://argo-cd.readthedocs.io/en/stable/operator-manual/ingress/#traefik-v30)
+    server.insecure: true # Necesario segun la doc oficial de ArgoCD (https://argo-cd.readthedocs.io/en/stable/operator-manual/ingress/#traefik-v30)
 
 server:
   insecure: true

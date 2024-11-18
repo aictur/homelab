@@ -4,7 +4,7 @@ data "github_user" "current" {
 
 resource "github_repository" "homelab-repo" {
   auto_init            = false
-  description          = "🧑‍💻 Mi infraestructura personal, empleando Kubernetes, Terraform y Cloudflare"
+  description          = "🧑‍💻 My personal infrastructure using Kubernetes, Terraform, Cloudflare and more"
   name                 = var.gh-repo-name
   visibility           = "public"
   vulnerability_alerts = true

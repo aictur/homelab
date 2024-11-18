@@ -53,7 +53,3 @@ TODO: Descripcion
   - Infografico de la arquitectura
   - Protocolo de creacion de aplicacion
   - Protocolo de creacion de dominio
-- Github Actions
-  - [Snyk](https://github.com/marketplace/actions/snyk)?
-  - Cloudflare Warp
-  - Ejecutar `./generate-domains-tf.sh`
