@@ -1,6 +1,9 @@
 name: Análisis
 run-name: Análisis
 on:
+  push:
+    branches:
+      - main
   pull_request:
     branches:
       - main
