@@ -17,7 +17,6 @@ TODO: Descripcion
 ### TODOs
 
 - Webhook GitHub -> ArgoCD
-- Autoaplicar las aplicaciones de ArgoCD desde el propio ArgoCD (terraform)
 - Servidor de [notificaciones](https://ntfy.sh/)
 - Github [Rulesests](https://github.com/github/ruleset-recipes?tab=readme-ov-file)
 - DDNS

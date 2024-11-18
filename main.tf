@@ -264,3 +264,8 @@ resource "helm_release" "argocd" {
     value = sensitive(bcrypt(var.argo-admin-password))
   }
 }
+
+resource "kubernetes_manifest" "argocd-apps" {
+  manifest   = yamldecode(file("./kubernetes/argocd/argocd.yaml"))
+  depends_on = [helm_release.argocd]
+}
