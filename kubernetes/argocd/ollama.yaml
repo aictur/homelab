@@ -19,7 +19,7 @@ spec:
 
     # directory
     directory:
-      recurse: false
+      recurse: true
       include: '{ollama.yaml,ai-models/*}'
   # Destination cluster and namespace to deploy the application
   destination:
