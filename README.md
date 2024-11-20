@@ -19,12 +19,8 @@ TODO: Descripcion
 - Webhook GitHub -> ArgoCD
 - Servidor de [notificaciones](https://ntfy.sh/)
 - Github [Rulesests](https://github.com/github/ruleset-recipes?tab=readme-ov-file)
-- DDNS
+- DDNS (https://github.com/qdm12/ddns-updater/blob/master/docs/cloudflare.md)
 - Backend provider OVH (S3) o Azure Blob
-- Flujo de crear dominios
-  - Crear registro DNS en pihole
-  - Reiniciar pihole cuando apliquemos cambios en los dominios
-  - Reiniciar cloudflared cuando apliquemos cambios en los dominios
 - Servidor de mail para envio de notificaciones
 - StorageClass para el ssd
 - Cambiar `reclaimPolicy: Delete` por `Retain` en `storageclass/local-path`
