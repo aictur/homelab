@@ -2,6 +2,6 @@ apiVersion: ollama.ayaka.io/v1
 kind: Model
 metadata:
   name: llama3.2
-  namespace: default
+  namespace: ollama-operator-system
 spec:
   image: llama3.2
