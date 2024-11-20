@@ -5,3 +5,5 @@ metadata:
   namespace: ollama-operator-system
 spec:
   image: llama3.2
+  replicas: 1
+  imagePullPolicy: IfNotPresent
