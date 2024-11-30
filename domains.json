@@ -14,4 +14,8 @@
   "tunnel": false,
   "value": "argo.aictur.dev",
   "service": "https://argocd-server.argocd.svc.cluster.local"
+},{
+  "tunnel": true,
+  "value": "tv.aictur.dev",
+  "service": "http://jellyfin.home.svc.cluster.local:8096"
 }]
