@@ -17,6 +17,16 @@ spec:
             name: argocd-server
             port:
               number: 80
+  - host: argo.taild52040.ts.net
+    http:
+      paths:
+      - pathType: Prefix
+        path: /
+        backend:
+          service:
+            name: argocd-server
+            port:
+              number: 80
   tls:
   - hosts:
     - argo.aictur.dev
