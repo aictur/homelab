@@ -23,7 +23,7 @@ spec:
         include: '*.yaml'
     - repoURL: https://github.com/aictur/homelab.git
       targetRevision: HEAD
-      path: kubernetes/apps
+      path: kubernetes/apps/manifests
 
       # directory
       directory:
