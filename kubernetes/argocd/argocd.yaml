@@ -12,15 +12,23 @@ spec:
   project: default
 
   # Source of the application manifests
-  source:
-    repoURL: https://github.com/aictur/homelab.git
-    targetRevision: HEAD
-    path: kubernetes/argocd
+  sources:
+    - repoURL: https://github.com/aictur/homelab.git
+      targetRevision: HEAD
+      path: kubernetes/argocd
 
-    # directory
-    directory:
-      recurse: true
-      include: '*.yaml'
+      # directory
+      directory:
+        recurse: true
+        include: '*.yaml'
+    - repoURL: https://github.com/aictur/homelab.git
+      targetRevision: HEAD
+      path: kubernetes/apps
+
+      # directory
+      directory:
+        recurse: true
+        include: 'argo-ingress.yaml'
   # Destination cluster and namespace to deploy the application
   destination:
     server: https://kubernetes.default.svc
