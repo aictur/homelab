@@ -76,7 +76,7 @@ resource "ssh_resource" "grx01" {
     "sudo systemctl restart k3s",
     # Instalamos tailscale
     "curl -fsSL https://tailscale.com/install.sh | sh",
-    "sudo tailscale up --ssh --advertise-tags=tag:ci --advertise-exit-node --auth-key=${tailscale_tailnet_key.tailscale-grx01-key.key}"
+    "sudo tailscale up --ssh --advertise-tags=tag:ci --advertise-exit-node --accept-routes --auth-key=${tailscale_tailnet_key.tailscale-grx01-key.key}"
   ])
 
   # Descargamos el fichero de configuracion de kubectl y cambiamos la IP del loopback a la real
