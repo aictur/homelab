@@ -8,11 +8,11 @@ spec:
     size: 20Gi
   numberOfInstances: 1
   users:
-    aictur:  # database owner
+    coder:  # database owner
     - superuser
     - createdb
     coder_user: []  # role for application foo
   databases:
-    coder: aictur  # dbname: owner
+    coder: coder  # dbname: owner
   postgresql:
     version: "16"
