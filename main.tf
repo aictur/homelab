@@ -74,9 +74,13 @@ resource "ssh_resource" "grx01" {
     "cat <<EOF | sudo tee /etc/rancher/k3s/config.yaml\n${templatefile("./k3s-config.tftpl", { "k8s-default-storage-path" = var.k8s-default-storage-path })}\nEOF",
     # Reiniciamos k3s para aplicar los cambios
     "sudo systemctl restart k3s",
+    # Configuramos el IP Forward
+    "echo 'net.ipv4.ip_forward = 1' | sudo tee -a /etc/sysctl.d/99-tailscale.conf",
+    "echo 'net.ipv6.conf.all.forwarding = 1' | sudo tee -a /etc/sysctl.d/99-tailscale.conf",
+    "sudo sysctl -p /etc/sysctl.d/99-tailscale.conf",
     # Instalamos tailscale
     "curl -fsSL https://tailscale.com/install.sh | sh",
-    "sudo tailscale up --ssh --advertise-tags=tag:ci --advertise-exit-node --accept-routes --auth-key=${tailscale_tailnet_key.tailscale-grx01-key.key}"
+    "sudo tailscale up --ssh --advertise-tags=tag:ci --advertise-exit-node --accept-routes --advertise-routes=192.168.1.0/24 --auth-key=${tailscale_tailnet_key.tailscale-grx01-key.key}"
   ])
 
   # Descargamos el fichero de configuracion de kubectl y cambiamos la IP del loopback a la real
