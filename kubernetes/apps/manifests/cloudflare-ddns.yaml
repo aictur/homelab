@@ -1,0 +1,48 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: cloudflare-ddns
+  namespace: cert-manager
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      name: cloudflare-ddns
+  template:
+    metadata:
+      labels:
+        name: cloudflare-ddns
+    spec:
+      containers:
+        - image: favonia/cloudflare-ddns:1.15.0
+          name: cloudflare-ddns
+          env:
+          - name: CLOUDFLARE_API_TOKEN
+            valueFrom:
+              secretKeyRef:
+                name: cloudflare-api-token-secret
+                key: api-token
+          envFrom:
+          - configMapRef:
+              name: cloudflare-ddns-env
+          resources:
+            limits:
+              memory: "256Mi"
+              cpu: "500m"
+          securityContext:
+            capabilities:
+              drop:
+                - all
+            readOnlyRootFilesystem: true
+      restartPolicy: Always
+---
+kind: ConfigMap
+apiVersion: v1
+metadata:
+  name: cloudflare-ddns-env
+  namespace: cert-manager
+data:
+  DOMAINS: vpn.aictur.dev
+  TZ: Europe/Madrid
+  IP6_PROVIDER: none
+

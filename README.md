@@ -12,14 +12,15 @@ TODO: Descripcion
 4. Importar SSH keys.
 5. Anadir `/usr/local/bin` a la opcion `secure_path` de `/etc/sudoers` (Fix para usar `k3s` con `sudo`).
 6. Obtener un token de cloudflare con permisos de edicion de tunel (Cloudflare Tunnel) y acceso a aplicaciones a nivel de cuenta (Access: Apps and Policies) y edicion de DNS a nivel de zona.
-7. Obtener un OAuth client y secret para Tailscale, asi como la
+7. Obtener un OAuth client y secret para Tailscale, asi como la Tailnet
 
 ### TODOs
 
-- Webhook GitHub -> ArgoCD
+- Jenkins
+  - Reiniciar argo
+  - Reiniciar pihole
 - Servidor de [notificaciones](https://ntfy.sh/)
 - Github [Rulesests](https://github.com/github/ruleset-recipes?tab=readme-ov-file)
-- DDNS (https://github.com/qdm12/ddns-updater/blob/master/docs/cloudflare.md)
 - Backend provider OVH (S3) o Azure Blob
 - Servidor de mail para envio de notificaciones
 - StorageClass para el ssd
@@ -29,7 +30,6 @@ TODO: Descripcion
   - Volumenes: [gemini](https://github.com/FairwindsOps/gemini), [velero](https://github.com/vmware-tanzu/velero), [snapscheduler](https://github.com/backube/snapscheduler)
 - DB Operator
 - Nextcloud
-- Jellyfin
 - Vaultwarden
 - Autoescalado a 0 con KEDA
 - Dashboards de grafana declarativamente
