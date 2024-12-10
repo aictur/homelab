@@ -33,10 +33,10 @@ resource "github_repository_ruleset" "not-to-main" {
     deletion         = true
     non_fast_forward = true
     pull_request {
-      dismiss_stale_reviews_on_push = false
-      require_code_owner_review = true
-      require_last_push_approval = true
-      required_approving_review_count = 1
+      dismiss_stale_reviews_on_push     = false
+      require_code_owner_review         = true
+      require_last_push_approval        = true
+      required_approving_review_count   = 1
       required_review_thread_resolution = false
     }
   }
