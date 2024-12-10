@@ -93,4 +93,4 @@ spec:
   tls:
   - hosts:
     - tv.aictur.dev
-    secretName: argocd-secret
+    secretName: jellyfin-secret
