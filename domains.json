@@ -18,4 +18,8 @@
   "tunnel": true,
   "value": "tv.aictur.dev",
   "service": "http://jellyfin.home.svc.cluster.local:8096"
+},{
+  "tunnel": false,
+  "value": "neptune-printer.aictur.dev",
+  "service": "http://neptune-printer.misc.svc.cluster.local"
 }]

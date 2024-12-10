@@ -1,0 +1,44 @@
+apiVersion: v1
+kind: Endpoints
+metadata:
+  name: neptune-printer
+  namespace: misc
+subsets:
+  - addresses:
+      - ip: 192.168.1.130
+    ports:
+      - port: 8000
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: neptune-printer
+  namespace: misc
+spec:
+  ports:
+    - port: 80
+      targetPort: 8000
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  annotations:
+    cert-manager.io/cluster-issuer: letsencrypt
+  name: neptune-printer
+  namespace: misc
+spec:
+  rules:
+  - host: neptune-printer.aictur.dev
+    http:
+      paths:
+      - pathType: Prefix
+        path: /
+        backend:
+          service:
+            name: neptune-printer
+            port:
+              number: 80
+  tls:
+  - hosts:
+    - neptune-printer.aictur.dev
+    secretName: neptune-printer-tls
