@@ -10,31 +10,63 @@ resource "github_repository" "homelab-repo" {
   vulnerability_alerts = true
 }
 
-resource "github_repository_environment" "production" {
-  environment         = "production"
-  repository          = github_repository.homelab-repo.name
-  prevent_self_review = false
-  reviewers {
-    users = [data.github_user.current.id]
+resource "github_repository_ruleset" "not-to-main" {
+  name        = "Not to main"
+  repository  = github_repository.homelab-repo.name
+  target      = "branch"
+  enforcement = "active"
+
+  conditions {
+    ref_name {
+      include = ["~DEFAULT_BRANCH"]
+      exclude = []
+    }
   }
-  deployment_branch_policy {
-    protected_branches     = true
-    custom_branch_policies = false
+
+  bypass_actors {
+    actor_id    = 5
+    actor_type  = "RepositoryRole"
+    bypass_mode = "always"
+  }
+
+  rules {
+    deletion         = true
+    non_fast_forward = true
+    pull_request {
+      dismiss_stale_reviews_on_push = false
+      require_code_owner_review = true
+      require_last_push_approval = true
+      required_approving_review_count = 1
+      required_review_thread_resolution = false
+    }
   }
 }
 
-resource "github_actions_environment_secret" "gh-ts-oauth-client-id" {
-  repository      = github_repository.homelab-repo.name
-  environment     = github_repository_environment.production.environment
-  secret_name     = "TS_OAUTH_CLIENT_ID"
-  plaintext_value = var.tailscale-client-id
-}
-resource "github_actions_environment_secret" "gh-ts-oauth-secret" {
-  repository      = github_repository.homelab-repo.name
-  environment     = github_repository_environment.production.environment
-  secret_name     = "TS_OAUTH_SECRET"
-  plaintext_value = var.tailscale-client-secret
-}
+# resource "github_repository_environment" "production" {
+#   environment         = "production"
+#   repository          = github_repository.homelab-repo.name
+#   prevent_self_review = false
+#   reviewers {
+#     users = [data.github_user.current.id]
+#   }
+#   deployment_branch_policy {
+#     protected_branches     = true
+#     custom_branch_policies = false
+#   }
+# }
+
+# resource "github_actions_environment_secret" "gh-ts-oauth-client-id" {
+#   repository      = github_repository.homelab-repo.name
+#   environment     = github_repository_environment.production.environment
+#   secret_name     = "TS_OAUTH_CLIENT_ID"
+#   plaintext_value = var.tailscale-client-id
+# }
+# resource "github_actions_environment_secret" "gh-ts-oauth-secret" {
+#   repository      = github_repository.homelab-repo.name
+#   environment     = github_repository_environment.production.environment
+#   secret_name     = "TS_OAUTH_SECRET"
+#   plaintext_value = var.tailscale-client-secret
+# }
 
 resource "tailscale_tailnet_key" "tailscale-grx01-key" {
   reusable      = true
