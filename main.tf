@@ -1,7 +1,3 @@
-data "github_user" "current" {
-  username = ""
-}
-
 resource "github_repository" "homelab-repo" {
   auto_init            = false
   description          = "🧑‍💻 My personal infrastructure using Kubernetes, Terraform, Cloudflare and more"
