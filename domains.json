@@ -22,4 +22,8 @@
   "tunnel": false,
   "value": "neptune-printer.aictur.dev",
   "service": "http://neptune-printer.misc.svc.cluster.local"
+},{
+  "tunnel": false,
+  "value": "esphome.aictur.dev",
+  "service": "http://esphome.home.svc.cluster.local:6052"
 }]

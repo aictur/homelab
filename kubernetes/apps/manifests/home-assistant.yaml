@@ -253,6 +253,16 @@ spec:
             cpu: 1
 ---
 apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  namespace: home
+  name: esphome-config
+spec:
+  storageClassName: local-path
+  accessModes: [ReadWriteOnce]
+  resources: { requests: { storage: 1Gi } }
+---
+apiVersion: v1
 kind: Service
 metadata:
   name: z2mqtt
@@ -265,3 +275,88 @@ spec:
       port: 8080
       targetPort: 8080
       name: z2mqtt
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: esphome
+  namespace: home
+  labels:
+    app: esphome
+spec:
+  strategy:
+    type: Recreate
+  replicas: 1
+  selector:
+    matchLabels:
+      app: esphome
+  template:
+    metadata:
+      labels:
+        app: esphome
+    spec:
+      volumes:
+        - name: config
+          persistentVolumeClaim:
+            claimName: esphome-config
+      hostNetwork: true
+      containers:
+      - name: esphome
+        image: esphome/esphome:2024.11.3
+        ports:
+        - containerPort: 6052
+        securityContext:
+          privileged: true
+          seccompProfile:
+            type: RuntimeDefault
+          capabilities:
+            drop:
+              - ALL
+        resources:
+          requests:
+            memory: 128Mi
+            cpu: 100m
+          limits:
+            memory: 2G
+            cpu: "1.5"
+        volumeMounts:
+          - mountPath: /config
+            name: config
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: esphome
+  namespace: home
+spec:
+  selector:
+    app: esphome
+  ports:
+    - protocol: TCP
+      port: 6052
+      targetPort: 6052
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  annotations:
+    # add an annotation indicating the issuer to use.
+    cert-manager.io/cluster-issuer: letsencrypt
+  name: esphome
+  namespace: home
+spec:
+  rules:
+  - host: esphome.aictur.dev
+    http:
+      paths:
+      - pathType: Prefix
+        path: /
+        backend:
+          service:
+            name: esphome
+            port:
+              number: 6052
+  tls:
+  - hosts:
+    - esphome.aictur.dev
+    secretName: esphome-tls
