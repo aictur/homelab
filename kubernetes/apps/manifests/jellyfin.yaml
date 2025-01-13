@@ -35,9 +35,13 @@ spec:
       labels:
         app:  jellyfin
     spec:
+      securityContext:
+        fsGroup: 997 # ID del grupo `render`
       containers:
       - name:  jellyfin
         image:  jellyfin/jellyfin:10.10.3
+        securityContext:
+          privileged: true
         ports:
         - containerPort: 8096
           protocol: TCP
@@ -47,6 +51,8 @@ spec:
           readOnly: True
         - mountPath: /config
           name: config
+        - mountPath: /dev/dri
+          name: jellyfin-hardware-accel
       volumes:
         - name: media
           persistentVolumeClaim:
@@ -54,6 +60,9 @@ spec:
         - name: config
           persistentVolumeClaim:
             claimName: jellyfin-config
+        - name: jellyfin-hardware-accel
+          hostPath:
+            path: /dev/dri
       restartPolicy: Always
 ---
 apiVersion: v1
