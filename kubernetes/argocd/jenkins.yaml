@@ -13,7 +13,7 @@ spec:
         releaseName: jenkins
         valueFiles:
           - $values/kubernetes/apps/helm/jenkins.values.yaml
-    - repoURL: 'https://github.com/aictur/homelab/blob/main/kubernetes/apps/helm/jenkins.values.yaml'
+    - repoURL: 'https://github.com/aictur/homelab'
       targetRevision: main
       ref: values
   destination:
