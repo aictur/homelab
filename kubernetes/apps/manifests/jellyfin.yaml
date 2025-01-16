@@ -18,6 +18,8 @@ spec:
   accessModes: [ReadWriteOnce]
   resources: { requests: { storage: 100Gi } }
 ---
+# Hardware acceleration
+# https://www.johanneskueber.com/posts/hardware_acceleration_kubernets_jellyfin/
 apiVersion: apps/v1
 kind: Deployment
 metadata:

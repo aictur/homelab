@@ -20,7 +20,6 @@ TODO: Descripcion
   - Reiniciar argo
   - Reiniciar pihole
 - Servidor de [notificaciones](https://ntfy.sh/)
-- Github [Rulesests](https://github.com/github/ruleset-recipes?tab=readme-ov-file)
 - Backend provider OVH (S3) o Azure Blob
 - Servidor de mail para envio de notificaciones
 - StorageClass para el ssd
@@ -28,8 +27,6 @@ TODO: Descripcion
 - Backups
   - k3s
   - Volumenes: [gemini](https://github.com/FairwindsOps/gemini), [velero](https://github.com/vmware-tanzu/velero), [snapscheduler](https://github.com/backube/snapscheduler)
-- DB Operator
-- Nextcloud
 - Vaultwarden
 - Autoescalado a 0 con KEDA
 - Dashboards de grafana declarativamente

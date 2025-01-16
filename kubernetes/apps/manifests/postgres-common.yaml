@@ -11,7 +11,7 @@ spec:
     coder:  # database owner
     - superuser
     - createdb
-    coder_user: []  # role for application foo
+    coder_user: []
   databases:
     coder: coder  # dbname: owner
   postgresql:
