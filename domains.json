@@ -26,4 +26,9 @@
   "tunnel": false,
   "value": "esphome.aictur.dev",
   "service": "http://esphome.home.svc.cluster.local:6052"
+},
+{
+  "tunnel": false,
+  "value": "jenkins.aictur.dev",
+  "service": "jenkins.default.svc.cluster.local:8080"
 }]

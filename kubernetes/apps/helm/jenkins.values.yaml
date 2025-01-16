@@ -1,0 +1,30 @@
+controller:
+  jenkinsAdminEmail: aaictur@gmail.com
+  installPlugins:
+    - kubernetes:4306.vc91e951ea_eb_d
+    - workflow-aggregator:600.vb_57cdd26fdd7
+    - git:5.7.0
+    - configuration-as-code:1915.vcdd0a_d0d2625
+    - terraform:1.0.10
+  ingress:
+    enabled: true
+    apiVersion: networking.k8s.io/v1
+    annotations:
+      cert-manager.io/cluster-issuer: letsencrypt
+    hostName: jenkins.aictur.dev
+    tls:
+    - hosts:
+      - jenkins.aictur.dev
+      secretName: jenkins-tls
+  prometheus:
+    enabled: true
+
+agent:
+  enabled: true
+  skipTlsVerify: true
+  namespace: default
+
+persistence:
+  enabled: true
+  storageClass: local-path
+  size: "8Gi"
