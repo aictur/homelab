@@ -12,7 +12,7 @@ spec:
     helm:
       releaseName: jenkins
       valueFiles:
-        - ../apps/helm/jenkins.values.yaml
+        - kubernetes/apps/helm/jenkins.values.yaml
   destination:
     server: "https://kubernetes.default.svc"
     namespace: default
