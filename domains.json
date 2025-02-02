@@ -11,6 +11,10 @@
   "value": "speed.aictur.dev",
   "service": "http://speedtest.misc.svc.cluster.local"
 },{
+  "tunnel": true,
+  "value": "pass.aictur.dev",
+  "service": "http://vaultwarden.misc.svc.cluster.local"
+},{
   "tunnel": false,
   "value": "argo.aictur.dev",
   "service": "https://argocd-server.argocd.svc.cluster.local"
