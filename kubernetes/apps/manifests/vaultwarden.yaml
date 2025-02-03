@@ -37,6 +37,8 @@ spec:
         env:
           - name: DOMAIN
             value: https://pass.aictur.dev
+          - name: SIGNUPS_ALLOWED
+            value: "false"
         securityContext:
           seccompProfile:
             type: RuntimeDefault
