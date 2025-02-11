@@ -317,7 +317,7 @@ resource "helm_release" "vaultwarden-admin-secret" {
             namespace: misc
           type: Opaque
           data:
-            ADMIN_TOKEN: ${sensitive(var.vaultwarden-admin-secret)}
+            ADMIN_TOKEN: ${sensitive(base64encode(var.vaultwarden-admin-secret))}
       EOF
   ])
 }
