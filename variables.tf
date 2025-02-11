@@ -92,3 +92,9 @@ variable "argo-admin-password" {
   sensitive   = true
   description = "Password para el usuario admin de ArgoCD"
 }
+
+variable "vaultwarden-admin-secret" {
+  type        = string
+  sensitive   = true
+  description = "Password para el usuario admin de Vaultwarden"
+}

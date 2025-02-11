@@ -34,6 +34,9 @@ spec:
       containers:
       - name: vaultwarden
         image: vaultwarden/server:latest
+        envFrom:
+          - secretRef:
+              name: vaultwarden-admin-secret
         env:
           - name: DOMAIN
             value: https://pass.aictur.dev

@@ -301,3 +301,23 @@ resource "kubernetes_manifest" "argocd-apps" {
   manifest   = yamldecode(file("./kubernetes/argocd/argocd.yaml"))
   depends_on = [helm_release.argocd]
 }
+
+resource "helm_release" "vaultwarden-admin-secret" {
+  name       = "vaultwarden-admin-secret"
+  repository = "https://bedag.github.io/helm-charts/"
+  chart      = "raw"
+  version    = "2.0.0"
+  values = sensitive([
+    <<-EOF
+      resources:
+        - apiVersion: v1
+          kind: Secret
+          metadata:
+            name: vaultwarden-admin-secret
+            namespace: misc
+          type: Opaque
+          data:
+            ADMIN_TOKEN: ${sensitive(var.vaultwarden-admin-secret)}
+      EOF
+  ])
+}
